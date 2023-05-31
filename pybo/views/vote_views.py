@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 
-from ..models import Question, Answer
+from ..models import Question, Answer, Comment
 
 
 @login_required(login_url='common:login')
@@ -16,6 +16,31 @@ def vote_question(request, question_id):
     else:
         question.voter.add(request.user)
     return redirect('pybo:detail', question_id=question.id)
+
+@login_required(login_url='common:login')
+def vote_question_cancel(request, question_id):
+    """
+    pybo 질문추천취소
+    """
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user == question.author:
+        messages.error(request, '본인이 작성한 글은 추천취소 할수 없습니다')
+    else:
+        question.voter.remove(request.user)
+    return redirect('pybo:detail', question_id=question.id)
+
+@login_required(login_url='common:login')
+def vote_comment(request, comment_id):
+    """
+    pybo 댓글추천등록
+    """
+    comment = get_object_or_404(Comment, pk=comment_id)
+    
+    if request.user == comment.author:
+        messages.error(request, '본인의 댓글은 추천할수 없습니다')
+    else:
+        comment.voter.add(request.user)
+    return redirect('pybo:detail', question_id=comment.question.id)
 
 
 @login_required(login_url='common:login')

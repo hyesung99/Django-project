@@ -51,13 +51,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-<<<<<<< HEAD
 THIRD_PRATY_APPS = [
     'rest_framework',
 ]
 
-=======
->>>>>>> edd915e0b102304cf42f7ebe5a7178e20dd35333
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
